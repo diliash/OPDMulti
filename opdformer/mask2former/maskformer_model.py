@@ -2,24 +2,28 @@
 import pdb
 from typing import Tuple
 
+import numpy as np
 import torch
-from torch import device, nn
-from torch.nn import functional as F
-
 from detectron2.config import configurable
 from detectron2.data import MetadataCatalog
 from detectron2.modeling import META_ARCH_REGISTRY, build_backbone, build_sem_seg_head
 from detectron2.modeling.backbone import Backbone
 from detectron2.modeling.postprocessing import sem_seg_postprocess
-from detectron2.structures import Boxes, ImageList, Instances, BitMasks
+from detectron2.structures import BitMasks, Boxes, ImageList, Instances
 from detectron2.utils.memory import retry_if_cuda_oom
+from torch import device, nn
+from torch.nn import functional as F
 
-from .modeling.criterion import SetCriterion
+from .modeling.criterion import SetCriterion, convert_to_filled_tensor
 from .modeling.matcher import HungarianMatcher
-from .utils.tranform import matrix_to_quaternion, quaternion_to_matrix, rotation_6d_to_matrix, matrix_to_rotation_6d, geometric_median
-from .modeling.criterion import convert_to_filled_tensor
+from .utils.tranform import (
+    geometric_median,
+    matrix_to_quaternion,
+    matrix_to_rotation_6d,
+    quaternion_to_matrix,
+    rotation_6d_to_matrix,
+)
 
-import numpy as np
 
 @META_ARCH_REGISTRY.register()
 class MaskFormer(nn.Module):
@@ -191,7 +195,7 @@ class MaskFormer(nn.Module):
         if "VOTING" in cfg.MODEL.MOTIONNET:
             voting = cfg.MODEL.MOTIONNET.VOTING
         else:
-            voting = None
+            voting = "none"
 
         return {
             "backbone": backbone,

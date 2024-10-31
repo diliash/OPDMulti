@@ -10,6 +10,10 @@ This repository contains the implementation of **OPDFormer** based methods for t
 [arXiv](https://arxiv.org/abs/2303.14087)&nbsp; [Website](https://3dlg-hcvc.github.io/OPDMulti/)&nbsp;
 [Demo](https://huggingface.co/spaces/3dlg-hcvc/opdmulti-demo)
 
+## S2O instructions
+We recommend installing inference environment using `conda env create -f opdformer_inference.yaml`, follow the instructions in Setup section to build other dependencies. 
+Use `s2o_inference.py` for simple inference without converting data to the COCO format, remember to download checkpoint from S2O huggingface repo and specify the path to it. 
+For mapping predictions from image to mesh, use `pred_to_mesh_pygltk.py`.
 
 ## Content
 
