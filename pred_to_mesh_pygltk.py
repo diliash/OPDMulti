@@ -328,8 +328,8 @@ if __name__ == "__main__":
         pred_inst_triangle_map = {}
         triangle_instance_mask = np.zeros(len(temp_mesh.triangles), dtype=np.int_)
 
-        with open(f"{args.renderings_dir}/triangle_maps/{model_id}.json", "r") as f:
-            shape_triangles_map = json.load(f)
+        """with open(f"{args.renderings_dir}/triangle_maps/{model_id}.json", "r") as f:
+            shape_triangles_map = json.load(f)"""
 
         # In case triangle indices of rendered mesh do not match with the ones in the gltf file
         """flattened_triangles = np.transpose(np.array([triangle.flatten() for triangle in gltf.vertices[gltf.faces]]))
@@ -356,7 +356,7 @@ if __name__ == "__main__":
                 face_colors[trimesh_indexes] = np.asarray(S2O_COLOR_MAP_RGBA[3])
                 segmentation_map[str(instance_id)]["semantic"] = str(3)
                 segmentation_mask[trimesh_indexes] = instance_id
-                label = 3
+                label = 4
                 base_part_id = instance_id
                 motion = None
             else:
@@ -382,7 +382,6 @@ if __name__ == "__main__":
             part_mesh.update_faces(segmentation_mask == part_idx)
             part_mesh.remove_unreferenced_vertices()
             save_nonindexed_geometry(part_mesh, f"{args.export_path}/parts/{model_id}/{part_idx}.obj")
-
         _ = sample_and_export_points(temp_mesh, triangle_instance_mask, pred_inst_triangle_map, f"{args.export_path}/pcd", model_id)
 
         semantic_segmentation_map = np.zeros(len(temp_mesh.triangles), dtype=np.int_)
